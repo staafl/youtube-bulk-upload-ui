@@ -1,0 +1,21 @@
+﻿<Window x:Class="YoutubeBulkUploadUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:YoutubeBulkUploadUI"
+        mc:Ignorable="d"
+        Title="Youtube Bulk Upload UI" Height="350" Width="525">
+    <DockPanel LastChildFill="true">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+            <Button Name="but_upload" Click="but_upload_Click">Upload</Button>
+            <Button Name="but_add" Click="but_add_Click">Add Files</Button>
+            <Button Name="but_import" Click="but_import_Click">Import List</Button>
+            <Button Name="but_export" Click="but_export_Click">Export List</Button>
+            <Label>Channel:</Label>
+            <TextBox Name="tb_channel" Width="100"></TextBox>
+        </StackPanel>
+        <DataGrid Name="dgv" ItemsSource="{Binding TestBinding}" CanUserAddRows="false" >
+        </DataGrid>
+    </DockPanel>
+</Window>
