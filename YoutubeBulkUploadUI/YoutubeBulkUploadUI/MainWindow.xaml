@@ -5,19 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YoutubeBulkUploadUI"
         mc:Ignorable="d"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         Title="Youtube Bulk Upload UI" Height="350" Width="525">
+    <Window.Resources>
+            <ObjectDataProvider x:Key="EnumDataProvider" 
+                        MethodName="GetValues" 
+                        ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="local:VideoVisibility"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+    </Window.Resources>
     <DockPanel LastChildFill="true">
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
             <Button Name="but_upload" Click="but_upload_Click">Upload</Button>
-            <Button Name="but_add" Click="but_add_Click">Add Files</Button>
-            <Button Name="but_import" Click="but_import_Click">Import List</Button>
-            <Button Name="but_export" Click="but_export_Click">Export List</Button>
-            <Label>Channel:</Label>
-            <TextBox Name="tb_channel" Width="100"></TextBox>
+            <!--<Button Name="but_add" Click="but_add_Click">Add Files</Button>-->
+            <!--<Button Name="but_import" Click="but_import_Click">Import List</Button>-->
+            <!--<Button Name="but_export" Click="but_export_Click">Export List</Button>-->
+            <!--<Label>Channel:</Label>-->
+            <!--<TextBox Name="tb_channel" Width="100"></TextBox>-->
         </StackPanel>
-        <ProgressBar Name="progress" DockPanel.Dock="Bottom" Value="22" Minimum="0" Maximum="100" Height="40" />
-        <Label DockPanel.Dock="Bottom">Uploading video 1...</Label>
-        <DataGrid Name="dgv" ItemsSource="{Binding TestBinding}" CanUserAddRows="false" >
+        <ProgressBar Name="progress" DockPanel.Dock="Bottom" Minimum="0" Maximum="100" Height="40" />
+        <Label Name="label" DockPanel.Dock="Bottom">Drag videos above to add to upload queue...</Label>
+        <DataGrid Name="dgv" ItemsSource="{Binding TestBinding}" CanUserAddRows="false"  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=File}" Header="File" IsReadOnly="true"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Status}" Header="Status" IsReadOnly="true"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Title}" Header="Title" ></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Description}" Header="Description" ></DataGridTextColumn>
+                <DataGridTemplateColumn Header="Visibility">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox
+                                SelectedItem="{Binding Path=Visibility}"
+                                ItemsSource="{Binding Source={StaticResource EnumDataProvider}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
 </Window>

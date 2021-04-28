@@ -22,23 +22,57 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Google.Apis.Upload;
+using System.ComponentModel;
 
 namespace YoutubeBulkUploadUI
 {
+    public class DataGridComboBoxColumnWithBindingHack : DataGridComboBoxColumn
+    {
+        protected override FrameworkElement GenerateEditingElement(DataGridCell cell, object dataItem)
+        {
+            FrameworkElement element = base.GenerateEditingElement(cell, dataItem);
+            CopyItemsSource(element);
+            return element;
+        }
+
+        protected override FrameworkElement GenerateElement(DataGridCell cell, object dataItem)
+        {
+            FrameworkElement element = base.GenerateElement(cell, dataItem);
+            CopyItemsSource(element);
+            return element;
+        }
+
+        private void CopyItemsSource(FrameworkElement element)
+        {
+            BindingOperations.SetBinding(element, ComboBox.ItemsSourceProperty,
+              BindingOperations.GetBinding(this, ComboBox.ItemsSourceProperty));
+        }
+    }
+        public enum VideoVisibility
+        {
+            Public,
+            Unlisted,
+            Private
+        }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        class FileModel
+
+        class FileModel : INotifyPropertyChanged
         {
+            string status;
             public string File { get; set; }
-            public string Status { get; set; }
+            public string Status { get { return status; } set { status = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs (nameof(Status))); } }
             public string Length { get; set; }
             public string Title { get; set; }
             // todo: get from EXIF tags
             public string Description { get; set; }
-            public string Visibility { get; set; }
+            public VideoVisibility Visibility { get; set; }
+
+            public event PropertyChangedEventHandler PropertyChanged;
         }
 
         readonly ObservableCollection<FileModel> filesCollection = new ObservableCollection<FileModel>();
@@ -56,8 +90,6 @@ namespace YoutubeBulkUploadUI
 
         protected override void OnContentRendered(EventArgs e)
         {
-            dgv.Columns[0].IsReadOnly = true;
-
             base.OnContentRendered(e);
 
             UserCredential credential;
@@ -71,31 +103,13 @@ namespace YoutubeBulkUploadUI
                     new FileDataStore("YouTube.Auth.Store")).Result;
             }
 
-            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
                 ApplicationName = Assembly.GetExecutingAssembly().GetName().Name
             });
 
-            var filePath = @"D:\gopro\GOPR0001-stabilized.mp4"; // Replace with path to actual movie file.
-            var video = new Video();
-            video.Snippet = new VideoSnippet();
-            video.Snippet.Title = System.IO.Path.GetFileNameWithoutExtension(filePath);
-            //video.Snippet.Description = "Default Video Description";
-            //video.Snippet.Tags = new string[] { "tag1", "tag2" };
-            video.Snippet.CategoryId = "22"; // See https://developers.google.com/youtube/v3/docs/videoCategories/list
-            video.Status = new VideoStatus();
-            video.Status.PrivacyStatus = "unlisted"; // or "private" or "public"
-            //using ()
-            {
-                fileStream = new FileStream(filePath, FileMode.Open);
-                var videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
-                videosInsertRequest.ProgressChanged += videosInsertRequest_ProgressChanged;
-                videosInsertRequest.ResponseReceived += videosInsertRequest_ResponseReceived;
-                videosInsertRequest.UploadAsync();
-            }
         }
-        FileStream fileStream;
 
         private void videosInsertRequest_ResponseReceived(Video obj)
         {
@@ -105,7 +119,14 @@ namespace YoutubeBulkUploadUI
         {
             this.Dispatcher.BeginInvoke(new Action(() =>
             {
-                progress.Value = (int)(100*(obj.BytesSent / fileStream.Length));
+                try
+                {
+                    progress.Value = (int)(100 * (obj.BytesSent / (double)fileStream.Length));
+                }
+                catch (ObjectDisposedException)
+                {
+                    progress.Value = 100;
+                }
             }));
         }
 
@@ -119,20 +140,50 @@ namespace YoutubeBulkUploadUI
                 var files = (e.Data.GetData("FileDrop") as string[]);
                 foreach (var file in files)
                 {
-                    filesCollection.Add(new FileModel { File = file });
+                    var model = new FileModel
+                    {
+                        File = file,
+                        Status = "Pending",
+                        Visibility = VideoVisibility.Unlisted,
+                        Title = System.IO.Path.GetFileNameWithoutExtension(file)
+                    };
+                    filesCollection.Add(model);
                 }
             }
             // MessageBox.Show(string.Join(";", ));
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        FileStream fileStream;
+        private YouTubeService youtubeService;
+
+        private async void but_upload_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void but_upload_Click(object sender, RoutedEventArgs e)
-        {
-
+            this.IsEnabled = false;
+            int ii = 0;
+            foreach (var file in filesCollection)
+            {
+                file.Status = "Uploading...";
+                ii += 1;
+                label.Content = "Uploading video " + ii + ": " + System.IO.Path.GetFileName(file.File);
+                var filePath = file.File;
+                var video = new Video();
+                video.Snippet = new VideoSnippet();
+                video.Snippet.Title = file.Title;
+                video.Snippet.Description = file.Description;
+                //video.Snippet.Tags = new string[] { "tag1", "tag2" };
+                video.Snippet.CategoryId = "22"; // See https://developers.google.com/youtube/v3/docs/videoCategories/list
+                video.Status = new VideoStatus();
+                video.Status.PrivacyStatus = (file.Visibility + "").ToLower();
+                using (fileStream = new FileStream(filePath, FileMode.Open))
+                {
+                    var videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
+                    videosInsertRequest.ProgressChanged += videosInsertRequest_ProgressChanged;
+                    videosInsertRequest.ResponseReceived += videosInsertRequest_ResponseReceived;
+                    await videosInsertRequest.UploadAsync();
+                    file.Status = "Uploaded";
+                }
+            }
+            label.Content = "Done!";
         }
 
         private void but_add_Click(object sender, RoutedEventArgs e)
