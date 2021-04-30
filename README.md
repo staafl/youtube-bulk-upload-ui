@@ -8,7 +8,7 @@ I also had the bad experience of paying for a similar application, which the dev
 
 ## How to Use
 
-Requires .NET 4.6.1. Download the latest release from here:
+Requires .NET 4.6.1. Download the latest release from here: (TODO)
 
 No installation needed. Start the application and you'll be prompted to provide access to your YouTube account in order to upload videos.
 
@@ -35,13 +35,3 @@ This app doesn't and will not gather ANY data from the user.
 If this tool helps you, consider sending a small donation to a charity of your choice and dropping me a line. You'll totally make my day. You can also donate a few bucks through me, in which case 100% of your donation will be forwarded to a children or animal shelter.
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=F7GH776DZEFNU)
-
-
-
-
-
-
-
-
-
-
