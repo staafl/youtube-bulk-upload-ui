@@ -26,40 +26,14 @@ using System.ComponentModel;
 
 namespace YoutubeBulkUploadUI
 {
-    public class DataGridComboBoxColumnWithBindingHack : DataGridComboBoxColumn
-    {
-        protected override FrameworkElement GenerateEditingElement(DataGridCell cell, object dataItem)
-        {
-            FrameworkElement element = base.GenerateEditingElement(cell, dataItem);
-            CopyItemsSource(element);
-            return element;
-        }
-
-        protected override FrameworkElement GenerateElement(DataGridCell cell, object dataItem)
-        {
-            FrameworkElement element = base.GenerateElement(cell, dataItem);
-            CopyItemsSource(element);
-            return element;
-        }
-
-        private void CopyItemsSource(FrameworkElement element)
-        {
-            BindingOperations.SetBinding(element, ComboBox.ItemsSourceProperty,
-              BindingOperations.GetBinding(this, ComboBox.ItemsSourceProperty));
-        }
-    }
-        public enum VideoVisibility
-        {
-            Public,
-            Unlisted,
-            Private
-        }
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        readonly ObservableCollection<FileModel> filesCollection = new ObservableCollection<FileModel>();
+        FileStream fileStream;
+        YouTubeService youtubeService;
 
         class FileModel : INotifyPropertyChanged
         {
@@ -71,11 +45,10 @@ namespace YoutubeBulkUploadUI
             // todo: get from EXIF tags
             public string Description { get; set; }
             public VideoVisibility Visibility { get; set; }
+            public Video Video { get; set; }
 
             public event PropertyChangedEventHandler PropertyChanged;
         }
-
-        readonly ObservableCollection<FileModel> filesCollection = new ObservableCollection<FileModel>();
 
         public MainWindow()
         {
@@ -93,7 +66,7 @@ namespace YoutubeBulkUploadUI
             base.OnContentRendered(e);
 
             UserCredential credential;
-            using (FileStream stream = new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
             {
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
@@ -103,16 +76,31 @@ namespace YoutubeBulkUploadUI
                     new FileDataStore("YouTube.Auth.Store")).Result;
             }
 
-            youtubeService = new YouTubeService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = Assembly.GetExecutingAssembly().GetName().Name
-            });
+            youtubeService = new YouTubeService(
+                new BaseClientService.Initializer()
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = Assembly.GetExecutingAssembly().GetName().Name
+                });
 
         }
 
         private void videosInsertRequest_ResponseReceived(Video obj)
         {
+            var file =
+                filesCollection.FirstOrDefault(x => x.Video.Id == obj.Id);
+            string error =
+                obj.ProcessingDetails?.ProcessingFailureReason ??
+                obj.Status?.RejectionReason ??
+                obj.Status.FailureReason;
+            if (error != null)
+            {
+                file.Status = "ERROR: " + error;
+            }
+            else if (obj.Status?.UploadStatus != null)
+            {
+                file.Status = obj.Status.UploadStatus;
+            }
         }
 
         private void videosInsertRequest_ProgressChanged(IUploadProgress obj)
@@ -151,9 +139,6 @@ namespace YoutubeBulkUploadUI
             }
         }
 
-        FileStream fileStream;
-        private YouTubeService youtubeService;
-
         private async void but_upload_Click(object sender, RoutedEventArgs e)
         {
             this.IsEnabled = false;
@@ -172,6 +157,7 @@ namespace YoutubeBulkUploadUI
                 video.Snippet.CategoryId = "22"; // See https://developers.google.com/youtube/v3/docs/videoCategories/list
                 video.Status = new VideoStatus();
                 video.Status.PrivacyStatus = (file.Visibility + "").ToLower();
+                file.Video = video;
                 using (fileStream = new FileStream(filePath, FileMode.Open))
                 {
                     var videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
@@ -179,24 +165,10 @@ namespace YoutubeBulkUploadUI
                     videosInsertRequest.ResponseReceived += videosInsertRequest_ResponseReceived;
                     await videosInsertRequest.UploadAsync();
                     file.Status = "Uploaded";
+                    progress.Value = 100;
                 }
             }
             label.Content = "Done!";
-        }
-
-        private void but_add_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void but_import_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void but_export_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
