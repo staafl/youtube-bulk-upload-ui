@@ -30,6 +30,10 @@ Should work on MacOS or Linux with Mono.
 
 This app doesn't and will not gather ANY data from the user.
 
+## Building
+
+To build the project you'll need to provide your own client_secret.json from Google Cloud since if I publish the client secret used in the binary, Google will likely revoke it. Protecting the client secret is also the reason why the published release is obfuscated. Just paste the JSON file in a static class ClientSecret with a string constant.
+
 ## Donations
 
 If this tool helps you, consider sending a small donation to a charity of your choice and dropping me a line. You'll totally make my day. You can also donate a few bucks through me, in which case 100% of your donation will be forwarded to a children or animal shelter.
