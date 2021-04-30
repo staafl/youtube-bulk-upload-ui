@@ -132,7 +132,6 @@ namespace YoutubeBulkUploadUI
 
         private void Dgv_Drop(object sender, DragEventArgs e)
         {
-
             // Shell IDList Array;DragImageBits;DragContext;DragSourceHelperFlags;InShellDragLoop;FileDrop;FileNameW;FileName
 
             if (e.Data.GetDataPresent("FileDrop"))
@@ -150,7 +149,6 @@ namespace YoutubeBulkUploadUI
                     filesCollection.Add(model);
                 }
             }
-            // MessageBox.Show(string.Join(";", ));
         }
 
         FileStream fileStream;
