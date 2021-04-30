@@ -8,7 +8,7 @@ I also had the bad experience of paying for a similar application, which the dev
 
 ## How to Use
 
-Requires .NET 4.6.1. Download the latest release from here: (TODO)
+Requires .NET 4.6.1. Download the latest release from here: https://github.com/staafl/youtube-bulk-upload-ui/releases/latest
 
 No installation needed. Start the application and you'll be prompted to provide access to your YouTube account in order to upload videos.
 
