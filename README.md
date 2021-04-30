@@ -4,7 +4,7 @@ A simple tool for uploading multiple videos to your YouTube channel.
 
 I needed something to help me upload my vacation videos and now I'm sharing it with you.
 
-I also had the bad experience of paying for a similar application, which the developers then broke and then demanded I pay for the new version to continue using it. Hopefully this will help others avoid this kind of inconvenience.
+I also had the bad experience of paying for a similar application, which the developers later broke and then demanded I pay for the new version to continue using it. Hopefully this will help others avoid this kind of inconvenience.
 
 ## How to Use
 
