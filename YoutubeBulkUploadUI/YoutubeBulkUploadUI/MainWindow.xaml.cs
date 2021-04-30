@@ -61,12 +61,16 @@ namespace YoutubeBulkUploadUI
             dgv.Drop += Dgv_Drop;
         }
 
+
         protected override void OnContentRendered(EventArgs e)
         {
             base.OnContentRendered(e);
 
             UserCredential credential;
-            using (var stream = new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
+            using (var stream =
+                (ClientSecret.clientSecret != null ? new MemoryStream(Encoding.UTF8.GetBytes(ClientSecret.clientSecret)) : null) ??
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("YoutubeBulkUploadUI.client_secret.json")
+                ?? (Stream)new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
             {
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
@@ -82,7 +86,6 @@ namespace YoutubeBulkUploadUI
                     HttpClientInitializer = credential,
                     ApplicationName = Assembly.GetExecutingAssembly().GetName().Name
                 });
-
         }
 
         private void videosInsertRequest_ResponseReceived(Video obj)
