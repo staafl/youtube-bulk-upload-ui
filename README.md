@@ -1,10 +1,12 @@
 # YouTube Bulk Upload UI - Lazy Edition
 
+NB: As of 2021-05-02, the app is waiting for Google's API Audit to finish before being publicly usable. Please check again in a few days.
+
 A simple tool for uploading multiple videos to your YouTube channel.
 
 I needed something to help me upload my vacation videos and now I'm sharing it with you.
 
-I also had the bad experience of paying for a similar application, which the developers later broke and then demanded I pay for the new version to continue using it. Hopefully this will help others avoid this kind of inconvenience.
+I also had the bad experience of paying for a similar application, which the developers later broke, then demanded I pay for the new version to continue using. Hopefully this will help others avoid this kind of inconvenience.
 
 ## How to Use
 
@@ -32,7 +34,7 @@ This app doesn't and will not gather ANY data from the user.
 
 ## Building
 
-To build the project you'll need to provide your own client_secret.json from Google Cloud since if I publish the client secret used in the binary, Google will likely revoke it. Protecting the client secret is also the reason why the published release is obfuscated. Just paste the JSON file in a static class ClientSecret with a string constant.
+To build the project you'll need to provide your own client_secret.json from Google Cloud, since if I publish the client secret used in the binary, Google will likely revoke it. Protecting the client secret is also the reason why the published release is obfuscated. Just paste the JSON file in a static class ClientSecret with a string constant.
 
 ## Donations
 
