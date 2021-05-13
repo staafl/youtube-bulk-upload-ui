@@ -1,2 +1,6 @@
+SelfDeclaredMadeForKids vs MadeForKids?
+Age restrictions?
+Retrieve duration after upload?
+
 https://developers.google.com/youtube/terms/developer-policies
 https://support.google.com/youtube/contact/yt_api_form

@@ -28,6 +28,12 @@ Should work on MacOS or Linux with Mono.
 
 - Resuming failed uploads.
 
+- Notify user when upload is complete.
+
+- Export list of video URLs on completion.
+
+- Integrate with ffmpeg for automatic stabilization etc.
+
 ## Privacy Policy
 
 This app doesn't and will not gather ANY data from the user.

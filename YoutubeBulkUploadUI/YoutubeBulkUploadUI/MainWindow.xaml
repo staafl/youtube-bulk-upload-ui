@@ -26,11 +26,16 @@
             <!--<TextBox Name="tb_channel" Width="100"></TextBox>-->
         </StackPanel>
         <ProgressBar Name="progress" DockPanel.Dock="Bottom" Minimum="0" Maximum="100" Height="40" />
-        <Label Name="label" DockPanel.Dock="Bottom">Drag videos above to add to upload queue...</Label>
-        <DataGrid Name="dgv" ItemsSource="{Binding TestBinding}" CanUserAddRows="false"  AutoGenerateColumns="False">
+        <Label Name="label" DockPanel.Dock="Bottom">Drag videos above to add to upload queue. For help, hit F1.</Label>
+        <CheckBox Name="copy" DockPanel.Dock="Bottom">Copy new video settings from last video on grid?</CheckBox>
+        <DataGrid Name="dgv"
+                  ItemsSource="{Binding Files}"
+                  CanUserAddRows="false"
+                  AutoGenerateColumns="false">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=File}" Header="File" IsReadOnly="true"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Path=Status}" Header="Status" IsReadOnly="true"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Url}" Header="Url" ></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Path=Title}" Header="Title" ></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Path=Description}" Header="Description" ></DataGridTextColumn>
                 <DataGridTemplateColumn Header="Visibility">
@@ -42,6 +47,17 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Category">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox
+                                SelectedItem="{Binding Category, UpdateSourceTrigger=PropertyChanged}"
+                                DisplayMemberPath="Name"
+                                ItemsSource="{Binding Path=DataContext.Categories, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridCheckBoxColumn Header="Made for Kids?" Binding="{Binding Path=MadeForKids}"></DataGridCheckBoxColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
