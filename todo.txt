@@ -8,6 +8,7 @@ Config
 - open log on finished
 Logging
 Way to move video up or down on grid
+upload.csv - write video durations
 
 https://developers.google.com/youtube/terms/developer-policies
 https://support.google.com/youtube/contact/yt_api_form

@@ -327,9 +327,12 @@ namespace YoutubeBulkUploadUI
             }
             label.Content = "Done!";
 
-            using (var sw = new StreamWriter("upload.csv"))
+            if (!File.Exists("upload.csv"))
             {
-                sw.WriteLine("File,Status,Result,Title,Description,Category,Tags,Made for Kids");
+                File.WriteAllText("upload.csv", "File,Status,Result,Title,Description,Category,Tags,Made for Kids\n");
+            }
+            using (var sw = new StreamWriter("upload.csv", append: true))
+            {
                 foreach (var file in filesCollection)
                 {
                     var csvLine = new[]{
