@@ -290,7 +290,7 @@ namespace YoutubeBulkUploadUI
 
         private async void but_upload_Click(object sender, RoutedEventArgs e)
         {
-            this.IsEnabled = false;
+            but_upload.IsEnabled = false;
             int ii = 0;
             foreach (var file in filesCollection)
             {
@@ -356,6 +356,7 @@ namespace YoutubeBulkUploadUI
                 }
             }
             Process.Start("notepad.exe", "upload-list.log");
+            but_upload.IsEnabled = true;
         }
 
         private string ReplacePatterns(FileModel model, string what, int index)
