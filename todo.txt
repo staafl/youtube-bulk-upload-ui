@@ -11,3 +11,4 @@ Way to move video up or down on grid
 
 https://developers.google.com/youtube/terms/developer-policies
 https://support.google.com/youtube/contact/yt_api_form
+https://developers.google.com/youtube/v3/getting-started#quota

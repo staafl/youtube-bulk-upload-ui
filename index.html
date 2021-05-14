@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>YouTube Bulk Upload UI - Lazy Edition</title>
+</head>
+<body>
+<h1 id="youtube-bulk-upload-ui-lazy-edition">YouTube Bulk Upload UI - Lazy Edition</h1>
+
+<p>NB: As of 2021-05-02, the app is waiting for Google&#39;s API Audit to finish before being publicly usable. Please check again in a few days.</p>
+
+<p>A simple tool for uploading multiple videos to your YouTube channel.</p>
+<p>I needed something to help me upload my vacation videos and now I&#39;m sharing it with you.</p>
+<p>I also had the bad experience of paying for a similar application, which the developers later broke, then demanded I pay for the new version to continue using. Hopefully this will help others avoid this kind of inconvenience.</p>
+
+<img src="./screenshot.png" alt="App screenshot" width="600px"/>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#how-to-use">How to Use</a></li>
+<li><a href="#planned-features">Planned Features</a></li>
+<li><a href="#privacy-policy">Privacy Policy</a></li>
+<li><a href="#building">Building</a></li>
+<li><a href="#donations">Donations</a></li>
+</ul>
+
+
+<h2 id="how-to-use">How to Use</h2>
+<p>Requires .NET 4.6.1. Download the latest release from here: <a href="https://github.com/staafl/youtube-bulk-upload-ui/releases/latest">https://github.com/staafl/youtube-bulk-upload-ui/releases/latest</a></p>
+<p>No installation needed. Start the application and you&#39;ll be prompted to provide access to your YouTube account in order to upload videos.</p>
+<p>Afterwards, you can drag videos files to the main grid of the application and edit their details. When you&#39;re finished, just hit &quot;Upload&quot; and the app will do its job.</p>
+<p>To remove videos from the grid, select the lines on the grid and hit &quot;Delete&quot;.</p>
+<p>The title and description fields support the following placeholders: %f - file name, %i - order of file on the grid, %c - total number of files on the grid (so having five videos with title "%f - part %i/%c" will upload them with titles like "my video - part 2/5")</p>
+<p>Should work on MacOS or Linux with Mono.</p>
+<h2 id="planned-features">Planned Features</h2>
+<ul>
+<li><p>Reading video EXIF tags to populate title and description automatically or with a pattern supplied by the user.</p>
+</li>
+<li><p>Export / import lists of videos to upload in CSV file format (e.g. for compatibility with Excel).</p>
+</li>
+<li><p>Resuming failed uploads.</p>
+</li>
+<li><p>Notify user when upload is complete.</p>
+</li>
+<li><p>Export list of video URLs on completion.</p>
+</li>
+<li><p>Integrate with ffmpeg for automatic stabilization etc.</p>
+</li>
+</ul>
+<h2 id="privacy-policy">Privacy Policy</h2>
+<p>This app doesn&#39;t and will not gather ANY data from the user.</p>
+<p>This app's use of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+<h2 id="building">Building</h2>
+<p>Download the code here: <a href="https://github.com/staafl/youtube-bulk-upload-ui">https://github.com/staafl/youtube-bulk-upload-ui</a></p>
+<p>To build the project you&#39;ll need to provide your own client_secret.json from Google Cloud, since if I publish the client secret used in the binary, Google will likely revoke it. Protecting the client secret is also the reason why the published release is obfuscated. Just paste the JSON file in a static class ClientSecret with a string constant.</p>
+<h2 id="donations">Donations</h2>
+<p>If this tool helps you, consider sending a small donation to a charity of your choice and dropping me a line. You&#39;ll totally make my day. You can also donate a few bucks through me, in which case 100% of your donation will be forwarded to a children or animal shelter.</p>
+<p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=F7GH776DZEFNU"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate"></a></p>
+</body>
+</html>

@@ -42,7 +42,38 @@ namespace YoutubeBulkUploadUI
         FileStream fileStream;
         FileModel currentUpload;
         YouTubeService youtubeService;
-        string country;
+        string categories = @"1,Film & Animation
+2,Autos & Vehicles
+10,Music
+15,Pets & Animals
+17,Sports
+18,Short Movies
+19,Travel & Events
+20,Gaming
+21,Videoblogging
+22,People & Blogs
+23,Comedy
+24,Entertainment
+25,News & Politics
+26,Howto & Style
+27,Education
+28,Science & Technology
+30,Movies
+31,Anime/Animation
+32,Action/Adventure
+33,Classics
+34,Comedy
+35,Documentary
+36,Drama
+37,Family
+38,Foreign
+39,Horror
+40,Sci-Fi/Fantasy
+41,Thriller
+42,Shorts
+43,Shows
+44,Trailers
+";
 
         class CategoryModel
         {
@@ -82,6 +113,15 @@ namespace YoutubeBulkUploadUI
 
         }
 
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            if (e.Key == Key.F1)
+            {
+                Process.Start("http://trustingwolves.com/youtube-bulk-upload/index.html#how-to-use");
+            }
+            base.OnKeyUp(e);
+        }
+
         protected async override void OnContentRendered(EventArgs e)
         {
             base.OnContentRendered(e);
@@ -109,9 +149,9 @@ namespace YoutubeBulkUploadUI
 
             // https://developers.google.com/youtube/v3/docs/videoCategories/list?apix_params=%7B%22part%22%3A%5B%22snippet%22%5D%2C%22regionCode%22%3A%22us%22%7D
             categoriesCollection.Add(null);
-            if (File.Exists("categories.txt"))
+            //if (File.Exists("categories.txt"))
             {
-                foreach (var line in File.ReadAllLines("categories.txt"))
+                foreach (var line in categories.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)) //File.ReadAllLines("categories.txt"))
                 {
                     var split = line.Split(new[] { ',' }, 2);
                     categoriesCollection.Add(
@@ -122,7 +162,7 @@ namespace YoutubeBulkUploadUI
                         });
                 }
             }
-            else
+            /*else
             {
                 string regionName;
                 try
@@ -156,7 +196,7 @@ namespace YoutubeBulkUploadUI
                         });
                     File.AppendAllLines("categories.txt", new[] { category.Id + "," + category.Snippet.Title });
                 }
-            }
+            }*/
 
         }
 
