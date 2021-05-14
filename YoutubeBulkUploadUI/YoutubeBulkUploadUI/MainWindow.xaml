@@ -42,7 +42,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox
-                                SelectedItem="{Binding Path=Visibility}"
+                                SelectedItem="{Binding Path=Visibility, UpdateSourceTrigger=PropertyChanged}"
                                 ItemsSource="{Binding Source={StaticResource EnumDataProvider}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -51,7 +51,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox
-                                SelectedItem="{Binding Category, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedItem="{Binding Path=Category, UpdateSourceTrigger=PropertyChanged}"
                                 DisplayMemberPath="Name"
                                 ItemsSource="{Binding Path=DataContext.Categories, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
                         </DataTemplate>
