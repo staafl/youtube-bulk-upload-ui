@@ -6,7 +6,7 @@ I needed something to help me upload my vacation videos and now I'm sharing it w
 
 I also had the bad experience of paying for a similar application, which the developers later broke, then demanded I pay for the new version to continue using. Hopefully this will help others avoid this kind of inconvenience.
 
-![app screenshot](https://github.com/staafl/youtube-bulk-upload-ui/blob/master/screenshot.jpg?raw=true)
+![app screenshot](https://github.com/staafl/youtube-bulk-upload-ui/blob/main/screenshot.png?raw=true)
 
 ## How to Use
 
