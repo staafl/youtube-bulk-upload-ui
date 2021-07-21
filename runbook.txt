@@ -1,3 +1,12 @@
-- Update documentation
+- Updating documentation
 
 sg-scp index.html youtube-bulk-upload index.html
+
+- Releasing new version
+
+Build, then copy over the exe from Obfuscator_Output into the output folder. Then zip up and upload. Don't forget to delete the xml files, the upload log and csv files and any previous zips.
+
+Also tag the current commit with the assembly version.
+
+- Google OAuth credentials
+%APPDATA%\YouTube.Auth.Store
