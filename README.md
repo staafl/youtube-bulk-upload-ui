@@ -36,8 +36,6 @@ This app should work on MacOS or Linux with Mono.
 
 - Notify user when upload is complete, e.g. via push notification or by running a shell task.
 
-- Export list of video URLs on completion.
-
 - Integrate with ffmpeg for automatic stabilization etc.
 
 ## Privacy Policy
