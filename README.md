@@ -16,7 +16,7 @@ No installation needed. Start the application and you'll be prompted to provide 
 
 NB: As of 2021-07-22, Google Cloud API verification is still ongoing for the application and you'll see a "Google hasn't verified this app" screen on the consent page. You'll need to click on "Advanced" and click on the "Go to Youtube Bulk Upload UI (unsafe)" link if you want to use it. Sorry about that, but the validation process has a lot of details that need to be tweaked and a lot of back and forth over email, and I'm busy so the process is progressing slowly. You're welcome to wait a few weeks instead until verification is hopefully officially complete.
 
-Afterwards, you can drag videos files to the main grid of the application and edit their details. When you're finished, just hit "Upload" and the app will do its job.
+After logging in, you can drag videos files to the main grid of the application and edit their details. When you're finished, just hit "Upload" and the app will do its job.
 
 To remove videos from the grid, select the lines on the grid and hit "Delete".
 
