@@ -1,5 +1,11 @@
 # YouTube Bulk Upload UI - Lazy Edition
 
+## IMPORTANT
+
+It seems the Google has removed the application's registration for their own inscrutable reasons. For the moment the app won't work as is and I don't have time to update it. Feel free to rebuild it with your own client-secret.json etc.
+
+
+
 A simple tool for uploading multiple videos to your YouTube channel.
 
 I needed something to help me upload my vacation videos and now I'm sharing it with you.
